@@ -6,28 +6,38 @@ if(!isset($_SESSION['userId'])){
 }
 
 
-var_dump($_SESSION);
+require_once 'src/User.php';
+require_once 'src/Tweet.php';
+require_once 'connection.php';
+
+
+
+
+/*
+ * SELECT Users.name, Tweets.tweet
+FROM Users
+JOIN Tweets ON Users.id = Tweets.userId;
+ */
 
 
 
 if($_SERVER['REQUEST_METHOD'] =='POST'){
-    if(isset($_POST['messageToAdd']) && isset($_SESSION['userId'])){
-        require_once 'src/Message.php';
+    if(isset($_POST['tweetToAdd']) && isset($_SESSION['userId'])){
+        require_once 'src/Tweet.php';
         require_once 'connection.php';
-        $messageToAdd = $_POST['messageToAdd'];
+        $tweetToAdd = $_POST['tweetToAdd'];
         $userId = $_SESSION['userId'];
         
-        $message = new Message();
-        $message->setUserId($userId);
-        $message->setMessage($messageToAdd);
+        $tweet = new Tweet();
+        $tweet->setUserId($userId);
+        $tweet->setTweet($tweetToAdd);
         
        // $newMessage = Message::saveTheMessageToTheDB($conn, $userId, $messageToAdd);
         
         
-        if($message->saveTheMessageToTheDB($conn)){
-            echo 'tak';
+        if($tweet->saveTheTweetToTheDB($conn)){
         } else {
-            echo 'nie';
+            echo 'blad';
         }
     }
 }
@@ -41,8 +51,43 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
     <body>
          Strona główna
          
+         <?php
+         require_once 'src/Tweet.php';
+         require_once 'connection.php';
+         require_once 'src/User.php';
+         require_once 'src/Comment.php';
+         $tweets = Tweet::loadAllTweets($conn);
+         foreach($tweets as $tweet){
+             $tweetId = $tweet->getId();
+             
+             $tweetToEcho = $tweet->getTweet();
+             $userId = $tweet->getUserId();
+             $date = $tweet->getDate();
+             
+            
+            $user = User::loadUserById($conn, $userId);
+            $userName = $user->getName();
+            $userID = $user->getId();
+            $numberOfComments = Comment::loadAllCommentsByTweetId($conn, $tweetId);
+             ?>
+             <table>
+             <tr>
+                 <td>
+                     <a href="userWebPage.php?userId=<?php echo $userID; ?>"><?php echo $userName; ?>
+                 </td>
+                 <td><?php echo $tweetToEcho; ?> </td>
+                 <td><?php echo 'Ilość komenatarzy: ' .  count($numberOfComments); ?> </td>
+                 <td><a href="showThePost.php?tweetId=<?php echo $tweetId; ?>">Skomentuj post</a></td>
+             </tr>
+             
+            </table>
+            <?php 
+         }
+        ?>
+             
+         
         <form method="POST" action="#">
-            <textarea name="messageToAdd" rows="8" cols="40">Wpisz wiadomość</textarea>
+            <textarea name="tweetToAdd" rows="8" cols="40" maxlength="140">Wpisz wiadomość</textarea>
             <br>
             <input type="submit">
         </form>
@@ -57,5 +102,5 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
         
         
         
-    </body
+    </body>
 </html>
