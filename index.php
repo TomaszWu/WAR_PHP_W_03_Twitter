@@ -26,10 +26,10 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
         require_once 'src/Tweet.php';
         require_once 'connection.php';
         $tweetToAdd = $_POST['tweetToAdd'];
-        $userId = $_SESSION['userId'];
+        $currentUserId = $_SESSION['userId'];
         
         $tweet = new Tweet();
-        $tweet->setUserId($userId);
+        $tweet->setUserId($currentUserId);
         $tweet->setTweet($tweetToAdd);
         
        // $newMessage = Message::saveTheMessageToTheDB($conn, $userId, $messageToAdd);
@@ -49,8 +49,8 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
          <meta charset="utf-8">  
     </head>
     <body>
-         Strona główna
-         
+        <p>Strona główna</p>
+        
          <?php
          require_once 'src/Tweet.php';
          require_once 'connection.php';
@@ -61,11 +61,11 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
              $tweetId = $tweet->getId();
              
              $tweetToEcho = $tweet->getTweet();
-             $userId = $tweet->getUserId();
+             $tweetAuthorId = $tweet->getUserId();
              $date = $tweet->getDate();
              
             
-            $user = User::loadUserById($conn, $userId);
+            $user = User::loadUserById($conn, $tweetAuthorId);
             $userName = $user->getName();
             $userID = $user->getId();
             $numberOfComments = Comment::loadAllCommentsByTweetId($conn, $tweetId);
@@ -73,7 +73,7 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
              <table>
              <tr>
                  <td>
-                     <a href="userWebPage.php?userId=<?php echo $userID; ?>"><?php echo $userName; ?>
+                     <a href="userWebPage.php?userId=<?php echo $userID; ?>"><?php echo $userName; ?></a>
                  </td>
                  <td><?php echo $tweetToEcho; ?> </td>
                  <td><?php echo 'Ilość komenatarzy: ' .  count($numberOfComments); ?> </td>
@@ -81,8 +81,10 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
              </tr>
              
             </table>
+       
             <?php 
          }
+        
         ?>
              
          
@@ -97,9 +99,11 @@ if($_SERVER['REQUEST_METHOD'] =='POST'){
         if(isset($_SESSION['userId'])){
             echo '<a href="logout.php">Logout</a>';
         }
+        
+        
         ?>
-        
-        
+        <br>
+        <a href="checkTheMassage.php?userId=<?php echo $_SESSION['userId']; ?>"> Sprawdź pocztę </a>
         
         
     </body>

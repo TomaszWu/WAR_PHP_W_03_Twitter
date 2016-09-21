@@ -1,4 +1,4 @@
-<?php
+autho<?php
 
 session_start();
 
@@ -81,7 +81,6 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
             require_once 'src/Comment.php';
 
             $comments = Comment::loadAllCommentsByTweetId($conn, $_SESSION['tweetId']);
-            var_dump(count($comments));
             foreach ($comments as $comment) {
                 $commentToShow = $comment->getComment();
                 $dateToShow = $comment->getDate();

@@ -1,4 +1,7 @@
 <?php
+session_start();
+var_dump($_SESSION);
+
 
 if($_SERVER['REQUEST_METHOD'] == 'GET'){
     if(isset($_GET['userId'])){
@@ -9,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         $allUsersTweets = Tweet::loadAllUSersTweets($conn, $userId);
         $userNameToGet = User::loadUserById($conn, $userId);
         $userName = $userNameToGet->getName();
-       
+        $receiverId = $userNameToGet->getId();
         
     }
 }
@@ -25,7 +28,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         <?php
          echo 'Tweety użytkownika ' . $userName . ' :' . ('<br>');
          ?>
-        <a href="#=userId=<?php echo $userId; ?>">Wyślij wiadomość do użytkownika</a>
+        <a href="sendAMassage.php?receiverId=<?php echo $userId; ?>">Wyślij wiadomość do użytkownika <?php echo $userName; ?></a>
         <?php
         foreach($allUsersTweets as $tweet){
             $tweetId = $tweet->getId();
@@ -39,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
             
         ?>
         <ul>
-            <li> <?php echo 'Tweet: ' . $tweetToShow . ' Data ' . $dateOfTweet . ' Ilość komentarzy: ' . $NumebrOfCommentsToTheTweet . ('<br>'); ?> </li>
+            <li> <?php echo $tweetToShow . ('<br>') . ' Data ' . $dateOfTweet . ' Ilość komentarzy: ' . $NumebrOfCommentsToTheTweet . ('<br>'); ?> </li>
             
         </ul>
         <?php

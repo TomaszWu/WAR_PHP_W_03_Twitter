@@ -73,7 +73,6 @@ class Comment {
    static public function loadAllCommentsByTweetId(mysqli $connection, $tweetId) {
        
         $query = "SELECT * FROM Comments
-                
                  WHERE tweetId = '" . $connection->real_escape_string($tweetId) . "'
                 ORDER BY Date DESC
                 LIMIT 0, 5";
