@@ -47,6 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <meta charset="utf-8"> 
     </head>
     <body>
+        
+        
+        
+        
         <label>Wysłane wiadomości:</label>
         <ol>
             
