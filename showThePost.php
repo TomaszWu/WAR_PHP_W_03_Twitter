@@ -1,4 +1,4 @@
-autho<?php
+<?php
 
 session_start();
 
@@ -69,7 +69,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <table>
             <tr><?php echo 'Autor: ' . $authorName . ' ' ?></tr>
             <br>
-            <tr><?php echo $tweetToShow ?></tr>
+            <tr><?php echo 'Tweet: ' . $tweetToShow ?></tr>
 
 
             <br>
@@ -88,7 +88,7 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 $authorOfTheComment = User::checkTheAuthorByCommentId($conn, $comment);
                 $userName = $authorOfTheComment->getName();
                 ?>
-                <tr><?php echo $userName . ' ' . $commentToShow . ' ' . $dateToShow . ('<br>'); ?> </tr>
+                <tr><?php echo 'Autor: ' . $userName . ' Tweet: ' . $commentToShow . ' Data: ' . $dateToShow . ('<br>'); ?> </tr>
                 <?php
             }
             ?>

@@ -82,25 +82,23 @@ class Massage {
                  FROM Massages
                  JOIN Users ON Users.id = Massages.senderId
                 JOIN Users AS User2 ON User2.id = Massages.receiverId
-                WHERE Users.id = '" . $connection->real_escape_string($userId) . "'";
+                WHERE Users.id = '" . $connection->real_escape_string($userId) . "'
+                ORDER BY date DESC";
         $result = $connection->query($query);
         return $result;
 //       
     }
 
     static public function loadAllReceivedMassagesByUserId(mysqli $connection, $userId) {
-        $query = "SELECT Massages.id, massage, status, date, Users.name AS sender, User2.name AS receiver
+        $query = "SELECT Massages.id, massage, status, date, Users.name AS receiver, User2.name AS sender
                  FROM Massages
                  JOIN Users ON Users.id = Massages.receiverId
                 JOIN Users AS User2 ON User2.id = Massages.senderId
-                WHERE Users.id = '" . $connection->real_escape_string($userId) . "'";
+                WHERE Users.id = '" . $connection->real_escape_string($userId) . "'
+                ORDER BY date DESC";
         $result = $connection->query($query);
         return $result;
-        if ($result == true && $result->num_rows > 0) {
-            foreach ($result as $row) {
-                ?> <a href="checkTheMassage.php?massageId=<?php echo $row['id']; ?>"><?php echo 'Nadawca: ' . $row['sender'] . ' Data wysłania wiadomości: ' . $row['date'] . ' Odbiorca: ' . $row['receiver'] . substr($row['massage'], 0, 30) . ('<br>'); ?></a> <?php
-            }
-        }
+        
     }
 
     static public function changeTheStatusOfAMassage(mysqli $connection, $massageId) {
@@ -126,17 +124,4 @@ class Massage {
 
 }
 
-//SELECT massage, senderId AS Sender, receiverId AS Receiver, Users.name as Sender, User2.name as Receiver
-//FROM Massages
-//JOIN Users ON Users.id = Massages.senderId
-//JOIN Users AS User2 ON User2.id = Massages.receiverId
-//LIMIT 0 , 30
-//
-//SELECT massage, Users.name AS Sender, User2.name AS Receiver
-//FROM Massages
-//JOIN Users ON Users.id = Massages.senderId
-//JOIN Users AS User2 ON User2.id = Massages.receiverId
-//WHERE Users.id =71
-//LIMIT 0 , 30
-        
         
