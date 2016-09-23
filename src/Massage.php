@@ -26,6 +26,9 @@ class Massage {
         $this->massage = '';
         $this->status = '';
     }
+    
+    public function __destruct() {
+    }
 
     public function getId() {
         return $this->id;
@@ -102,7 +105,7 @@ class Massage {
     }
 
     static public function changeTheStatusOfAMassage(mysqli $connection, $massageId) {
-        $query = "UPDATE Massages SET status = 1 WHERE id = '$massageId'";
+        $query = "UPDATE Massages SET `date` = `date`, status = 1 WHERE id = '$massageId'";
         if ($connection->query($query)) {
             return true;
         } else {

@@ -46,6 +46,9 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
         </ul>
         <?php
         }
+        
+        $conn->close();
+        $conn = null;
         ?>
     </body>
 </html>

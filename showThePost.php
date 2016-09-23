@@ -15,7 +15,7 @@ date TIMESTAMP;
  */
 
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET'){
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['tweetId'])) {
         require_once 'src/User.php';
         require_once 'src/Tweet.php';
@@ -29,9 +29,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET'){
         $_SESSION['autorName'] = $authorName;
         $_SESSION['tweetId'] = $tweetId;
         $_SESSION['tweetToShow'] = $tweetToShow;
-    }    
-}     
-elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){   
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['commentToAdd'])) {
         require_once 'src/Comment.php';
         require_once 'connection.php';
@@ -44,15 +43,15 @@ elseif ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $comment->setCommentedTweetId($commentedTweetId);
         $comment->setComment($commentToAdd);
         $comment->setAutorOfTheCommentById($userId);
-        if($comment->addACommentToTheTweet($conn)){
+        if ($comment->addACommentToTheTweet($conn)) {
+            
         } else {
-            echo  'Błąd!';
+            echo 'Błąd!';
         }
     }
 }
-
-
-
+$conn->close();
+$conn = null;
 ?>
 
 

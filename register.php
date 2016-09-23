@@ -10,26 +10,43 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                 require_once 'src/User.php';
                 require_once 'connection.php';
                 
+                $emailToCheck = $_POST['email'];
+                
+                $query = "SELECT email FROM Users WHERE email = '$emailToCheck'";
+                $checkIfThereIsAProblemWithAnEmail = $conn->query($query);
                 $user = new User();
                 $user->setName(trim($_POST['name']));
                 $user->setEmail(trim($_POST['email']));
                 $user->setPassword(trim($_POST['password']));
+                if (!filter_var($emailToCheck, FILTER_VALIDATE_EMAIL) === false) {
                 if($user->saveToDB($conn)){
                     echo 'Udało się zarejstrować';
                     header('Location: index.php');
+                } elseif($checkIfThereIsAProblemWithAnEmail && $checkIfThereIsAProblemWithAnEmail->num_rows > 0){
+                    echo 'Ten email już istnieje w bazie danych. Prosimy podać nowy.';
                 } else {
                     echo "Blad rejestracji";
                 }
-        
+                } else {
+                    echo "$emailToCheck nie jest poprawnym adresem mailowym";
+                }
     } else {
-        echo "bledne dane formularza";
+        echo "Błędne dane formularza";
     }
+    
+    $conn->close();
+    $conn = null;
 }            
+
+
+
 ?>
 
 
 <html>
-    <head></head>
+    <head>
+         <meta charset="utf-8"> 
+    </head>
     <body>
         <form method="POST">
             <label>
@@ -53,7 +70,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             </label>
             <br>
             <input type="submit" value="Register">    
-            
+            <br>
+            <a href="login.php">Wróć do logowania</a>
         </form>
     </body>
 </html>

@@ -17,6 +17,9 @@ class Comment {
         $this->comment = '';
         $this->date = '';
     }
+    
+    public function __destruct() {
+    }
 
     public function getId() {
         return $this->id;

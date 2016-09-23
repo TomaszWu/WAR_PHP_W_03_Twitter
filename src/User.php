@@ -14,6 +14,9 @@ class User {
         $this->hashedPassword = '';
     }
     
+    public function __destruct() {
+    }
+    
     public function getId() {
         return $this->id;
     }

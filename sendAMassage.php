@@ -9,7 +9,7 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_GET['receiverId']) && isset($_SESSION['userId'])) {
         
-        // nie wiem, czy pobieranie danych z trzech różnych źródel to dobra praktyka? 
+        // nie wiem, czy pobieranie danych z trzech różnych źródel jak poniżej to dobra praktyka? 
         $receiverId = $_GET['receiverId'];
         $senderId = $_SESSION['userId'];
         $massage = $_POST['massageToSend'];
@@ -31,6 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
         }
     }
+    
+    $conn->close();
+    $conn = null;
 }
 ?>
 

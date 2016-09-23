@@ -25,6 +25,9 @@ class Tweet {
      $this->tweet = '';
      $this->date = '';
  }   
+ 
+ public function __destruct() {
+ }
     
  public function getId() {
      return $this->id;

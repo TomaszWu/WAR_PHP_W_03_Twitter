@@ -1,40 +1,42 @@
 <?php
-
 require_once 'src/User.php';
 require_once 'connection.php';
 session_start();
 
-if($_SERVER['REQUEST_METHOD'] == 'POST'){
-    if(isset($_POST['email']) && strlen(trim($_POST['email'])) > 4  
-            && isset($_POST['password']) && strlen(trim($_POST['password'])) > 5){
-             
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
-            $user = User::login($conn, $email, $password);
-            
-            
-            
-            if($user){
-                $_SESSION['userId'] = $user->getId();
-                header('Location: index.php');
-            } else {
-                echo 'Niepoprawne dane logowania';
-            }
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['email']) && strlen(trim($_POST['email'])) > 4 && isset($_POST['password']) && strlen(trim($_POST['password'])) > 5) {
+
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
+        $user = User::login($conn, $email, $password);
+
+
+
+        if ($user) {
+            $_SESSION['userId'] = $user->getId();
+            header('Location: index.php');
+        } else {
+            echo 'Niepoprawne dane logowania';
+        }
     }
 }
 
 
-if($_SERVER['REQUEST_METHOD'] == 'GET'){
-    if(isset($_GET['registration']) && $_GET['registration'] == 'createNewAccount'){
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    if (isset($_GET['registration']) && $_GET['registration'] == 'createNewAccount') {
         header('Location: register.php');
     }
 }
 
+$conn->close();
+$conn = null;
 ?>
 
 
 <html>
-    <head> </head>
+    <head> 
+        <meta charset="utf-8"> 
+    </head>
     <body>
         <form method="POST">
             <label>
